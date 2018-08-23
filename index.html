@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>My导航</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <header></header>
+    <main>
+        <div id='mainX' class="wrapper"></div>
+    </main>
+    <footer></footer>
+    <script>
+        var keys = {
+            0: ["q","w","e","r","t","y","u","i","o","p"],
+            1: ["a","s","d","f","g","h","j","k","l"],
+            2: ["z","x","c","v","b","n","m"],
+            length:3
+        }
+        var hash = {
+            'q':"qq.com",
+            'w':"weibo.com",
+            'e':"ele.me",
+            'r':"renren.com",
+            't':"tianya.com",
+            'y':"youtube.com",
+            'u':"uc.com",
+            'i':"iqiyi.com",
+            'o':"opera.com",
+            'p':undefined,
+            'a':"acfun.tv",
+            's':"sohu.com",
+            'z':"zhihu.com",
+            'm':"www.mcdonalds.com.cn"
+        }
+        var hashInLocalStorage = JSON.parse(localStorage.getItem('zzz') || 'null')
+        if(hashInLocalStorage){
+            hash = hashInLocalStorage 
+        }
+        index = 0
+        while(index < keys['length']){
+            var divContainer = document.createElement('div')
+            divContainer.className = 'row'
+            mainX.appendChild(divContainer)
+            var row = keys[index]
+            index2 = 0
+            while(index2 < row['length']){
+                var kbdContainer = document.createElement('kbd')
+                var span = document.createElement('span')
+                kbdContainer.appendChild(span)
+                span.className = "text"
+                kbdContainer.className = 'key'
+                span.textContent = row[index2]
+                buttonContainer = document.createElement('button')
+                buttonContainer.textContent = '编辑'
+                buttonContainer.id = row[index2]
+                var imageXXX = document.createElement('img')
+                if(hash[row[index2]]){
+                    imageXXX.src ='http://' +  hash[row[index2]] + '/favicon.ico'
+                }
+                else{
+                    imageXXX.src = '//i.loli.net/2018/08/23/5b7e0c8bcb0e5.png'
+                }
+                imageXXX.onerror = function(canshu){
+                    canshu.target.src = '//i.loli.net/2018/08/23/5b7e0c8bcb0e5.png'
+                }
+                buttonContainer.onclick = function(canshu){
+                    var button2 = canshu.target
+                    var imageXXX2 = button2.previousSibling 
+                    key = canshu.target.id
+                    x = prompt('给我一个网址')
+                    hash[key] = x
+                    imageXXX2.src = 'http://' + x + '/favicon.ico'
+                    imageXXX2.onerror = function(canshu){
+                        canshu.target.src = '//i.loli.net/2018/08/23/5b7e0c8bcb0e5.png'
+                    }
+                    localStorage.setItem('zzz',JSON.stringify(hash))
+                    console.log(hash)
+                }
+                kbdContainer.appendChild(buttonContainer)
+                kbdContainer.appendChild(imageXXX)
+                divContainer.appendChild(kbdContainer)
+
+                index2 = index2 +1
+            }
+            index = index + 1
+        }
+
+        document.onkeypress = function(canshu){
+            console.log(canshu)
+            var key = canshu.key
+            var website = hash[key]
+            window.open('http://'+ website, '_blank')
+        }
+    </script>
+</body>
+</html>
